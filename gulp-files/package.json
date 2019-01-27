@@ -1,0 +1,12 @@
+{
+  "name": "frontenddevtest",
+  "version": "1.0.0",
+  "description": "This is a test project for learning gulp",
+  "git repository": "avishkadakia/frontenddevtest",
+  "main": "common.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Avish Kadakia",
+  "license": "ISC"
+}
