@@ -21,5 +21,8 @@
     "gulp-sass": "^4.0.2",
     "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^3.0.1"
+  },
+  "dependencies": {
+    "gulp-uglifycss": "^1.1.0"
   }
 }

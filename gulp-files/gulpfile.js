@@ -1,15 +1,18 @@
 var projectName = 'frontenddevtest/';
 var gulp = require('gulp'),
+    sass = require('gulp-sass'),//verified
+    uglifycss = require('gulp-uglifycss'),//verified
+
+
+
     autoprefixer = require('gulp-autoprefixer'),
     browserSync = require('browser-sync').create(),
     reload = browserSync.reload,
-    sass = require('gulp-sass'),
     cleanCSS = require('gulp-clean-css'),
     sourcemaps = require('gulp-sourcemaps'),
     concat = require('gulp-concat'),
     imagemin = require('gulp-imagemin'),
     changed = require('gulp-changed'),
-    uglify = require('gulp-uglify'),
     lineec = require('gulp-line-ending-corrector');
 
 var dev = '../dev/',
@@ -36,11 +39,18 @@ var imgSRC = dev + 'src/images/*',
     imgDEST = dev + 'dist/images/';
 
 gulp.task('css', function () {
-    return gulp.src(dev + '**/*.scss')
-        //  .pipe(sourcemaps.init({ loadMaps: true }))
-        .pipe(sass().on('error', sass.logError))
-        //  .pipe(sourcemaps.write())
-        .pipe(gulp.dest('../staging'));
+    return gulp.src(dev + '**/*.scss')//Fetching files from source folder and sub folders having extension as scss
+        .pipe(sourcemaps.init({ loadMaps: true }))//write source map to know origin file
+        .pipe(sass({
+            outputStyle: 'expanded'
+        }).on('error', sass.logError))//convert scss files to css files
+        .pipe(autoprefixer('last 2 versions'))
+        .pipe(concat('style.min.css'))//concatinate all css files in to a single style.min.css file
+        .pipe(cleanCSS())
+        .pipe(sourcemaps.write('./maps/'))
+        .pipe(lineec())//line endidng corrector !!!needs to be verified
+        .pipe(gulp.dest(statging + '/css/'));//Saving chnages to destination folder
+
 })
 
 
