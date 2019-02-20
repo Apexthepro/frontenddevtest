@@ -1,1 +1,12 @@
-console.log("From Common.js");
+function msg() {
+    alert("Hello Javatpoint");
+}
+function msg() {
+    alert("Hello Javatpoint");
+}
+function msg() {
+    alert("Hello Javatpoint");
+}
+function msg() {
+    alert("Hello Javatpoint");
+}  

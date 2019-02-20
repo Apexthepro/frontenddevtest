@@ -7,7 +7,8 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     lineec = require('gulp-line-ending-corrector'),
     autoprefixer = require('gulp-autoprefixer'),
-    uglifycss = require('gulp-uglifycss');
+    uglify = require('gulp-uglify');
+
 //Environment Configurations Start//
 var projectName = 'frontenddevtest/',
     dev = '../dev/',
@@ -15,7 +16,8 @@ var projectName = 'frontenddevtest/',
 //Watch Files Start//
 var html = dev + '**/*.html',
     scss = dev + '**/*.scss',
-    js = dev + '**/*.js';
+    scripts = dev + '**/*.js';
+
 //---------------------------------- Variable Definition End----------------------------------//
 //---------------------------------- Task Definition Start----------------------------------//
 //Gulp CSS Start//    
@@ -33,14 +35,29 @@ gulp.task('css', function () {
         .pipe(gulp.dest(dist + '/css/'))//Saving chnages to destination folder
 });
 //Gulp CSS End//
-
-
+//Gulp scripts start//
+gulp.task('scripts', function () {
+    return gulp.src(scripts)
+        .pipe(concat('common.min.js'))
+        .pipe(uglify())
+        .pipe(lineec())
+        .pipe(gulp.dest(dist + '/scripts/'));
+});
+//Gulp scripts end//
+//Gulp copy html as it is//
+gulp.task('copyHtml', function () {
+    gulp.src(html)
+        .pipe(gulp.dest(dist));
+});
+//Gulp copy html as it is//
 //---------------------------------- Task Definition End----------------------------------//
 //---------------------------------- Auto Watch Task Definition Start----------------------------------//
-gulp.task('run', ['css']);
+gulp.task('run', ['css', 'scripts', 'copyHtml']);
 
 gulp.task('watch', function () {
     gulp.watch(scss, ['css']);
+    gulp.watch(scripts, ['scripts']);
+    gulp.watch(html, ['copyHtml']);
 });
 
 gulp.task('default', ['run', 'watch']);
