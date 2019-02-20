@@ -31,34 +31,18 @@ gulp.task('css', function () {
         .pipe(sourcemaps.write('./maps/'))
         .pipe(lineec())//line endidng corrector !!!needs to be verified
         .pipe(gulp.dest(dist + '/css/'))//Saving chnages to destination folder
-    //  .pipe(browserSync.stream());
 });
 //Gulp CSS End//
-//Gulp Browser Sync Start//
 
 
-var gulp = require('gulp');
-var browserSync = require('browser-sync').create();
-var reload = browserSync.reload;
-
-// Save a reference to the `reload` method
-
-// Watch scss AND html files, doing different things with each.
-gulp.task('serve', function () {
-
-    // Serve files from the root of this project
-    browserSync.init({
-        open: 'external',
-        proxy: 'http://localhost:80/' + projectName + "dev/Home.html",
-        port: 80,
-    });
-
-    gulp.watch(html).on("change", reload);
-});
-
-//Gulp Browser Sync End//
 //---------------------------------- Task Definition End----------------------------------//
 //---------------------------------- Auto Watch Task Definition Start----------------------------------//
-gulp.task('default', gulp.parallel('serve'));
+gulp.task('run', ['css']);
+
+gulp.task('watch', function () {
+    gulp.watch(scss, ['css']);
+});
+
+gulp.task('default', ['run', 'watch']);
 
 //---------------------------------- Auto Watch Task Definition End----------------------------------//
