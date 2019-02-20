@@ -1,45 +1,27 @@
-var projectName = 'frontenddevtest/';
+//---------------------------------- Variable Definition Start----------------------------------//
+//Required Variables Start//
 var gulp = require('gulp'),
-    sass = require('gulp-sass'),//verified
-    uglifycss = require('gulp-uglifycss'),//verified
-
-
-
-    autoprefixer = require('gulp-autoprefixer'),
-    browserSync = require('browser-sync').create(),
-    reload = browserSync.reload,
+    sass = require('gulp-sass'),
     cleanCSS = require('gulp-clean-css'),
     sourcemaps = require('gulp-sourcemaps'),
     concat = require('gulp-concat'),
-    imagemin = require('gulp-imagemin'),
-    changed = require('gulp-changed'),
-    lineec = require('gulp-line-ending-corrector');
-
-var dev = '../dev/',
-    statging = '../staging/',
+    lineec = require('gulp-line-ending-corrector'),
+    autoprefixer = require('gulp-autoprefixer'),
+    uglifycss = require('gulp-uglifycss'),
+    browserSync = require('browser-sync').create();
+//Environment Configurations Start//
+var projectName = 'frontenddevtest/',
+    dev = '../dev/',
+    dist = '../dist/';
+//Watch Files Start//
+var html = dev + '**/*.html',
     scss = dev + '**/*.scss',
-    js = dev + 'scripts/';
-
-// Watch Files
-
-var PHPWatchFiles = dev + '**/*.php',
-    styleWatchFiles = dev + '**/*.scss';
-
-// Used to concat the files in a specific order.
-var jsSRC = [
-    js + 'common.js'
-];
-
-// Used to concat the files in a specific order.
-var cssSRC = [
-    dev + 'common.css'
-];
-
-var imgSRC = dev + 'src/images/*',
-    imgDEST = dev + 'dist/images/';
-
+    js = dev + '**/*.js';
+//---------------------------------- Variable Definition End----------------------------------//
+//---------------------------------- Task Definition Start----------------------------------//
+//Gulp CSS Start//    
 gulp.task('css', function () {
-    return gulp.src(dev + '**/*.scss')//Fetching files from source folder and sub folders having extension as scss
+    return gulp.src(scss)//Fetching files from source folder and sub folders having extension as scss
         .pipe(sourcemaps.init({ loadMaps: true }))//write source map to know origin file
         .pipe(sass({
             outputStyle: 'expanded'
@@ -49,70 +31,23 @@ gulp.task('css', function () {
         .pipe(cleanCSS())
         .pipe(sourcemaps.write('./maps/'))
         .pipe(lineec())//line endidng corrector !!!needs to be verified
-        .pipe(gulp.dest(statging + '/css/'));//Saving chnages to destination folder
-
+        .pipe(gulp.dest(dist + '/css/'))//Saving chnages to destination folder
+        .pipe(browserSync.stream());
 })
+//Gulp CSS End//
+//Gulp Browser Sync Start//
+gulp.task('serve', ['css'], function () {
 
+    browserSync.init({
+        server: "./"
+    });
 
+    gulp.watch(scss, ['css']);
+    gulp.watch(html, browserSync.reload);
+});
+//Gulp Browser Sync End//
+//---------------------------------- Task Definition End----------------------------------//
+//---------------------------------- Auto Watch Task Definition Start----------------------------------//
 
-// function css() {
-//     return gulp.src([scss + 'common.scss'])
-//         .pipe(sourcemaps.init({ loadMaps: true }))
-//         .pipe(sass({
-//             outputStyle: 'expanded'
-//         }).on('error', sass.logError))
-//         .pipe(autoprefixer('last 2 versions'))
-//         .pipe(sourcemaps.write())
-//         .pipe(lineec())
-//         .pipe(gulp.dest(dev));
-// }
-
-// function concatCSS() {
-//     return gulp.src(cssSRC)
-//         .pipe(sourcemaps.init({ loadMaps: true, largeFile: true }))
-//         .pipe(concat('style.min.css'))
-//         .pipe(cleanCSS())
-//         .pipe(sourcemaps.write('./maps/'))
-//         .pipe(lineec())
-//         .pipe(gulp.dest(scss));
-// }
-
-// function javascript() {
-//     return gulp.src(jsSRC)
-//         .pipe(concat('devwp.js'))
-//         .pipe(uglify())
-//         .pipe(lineec())
-//         .pipe(gulp.dest(jsdist));
-// }
-
-// function imgmin() {
-//     return gulp.src(imgSRC)
-//         .pipe(changed(imgDEST))
-//         .pipe(imagemin([
-//             imagemin.gifsicle({ interlaced: true }),
-//             imagemin.jpegtran({ progressive: true }),
-//             imagemin.optipng({ optimizationLevel: 5 })
-//         ]))
-//         .pipe(gulp.dest(imgDEST));
-// }
-
-// function watch() {
-//     browserSync.init({
-//         open: 'external',
-//         proxy: 'http://localhost:8888/demowp',
-//         port: 8080,
-//     });
-//     gulp.watch(styleWatchFiles, gulp.series([css, concatCSS]));
-//     gulp.watch(jsSRC, javascript);
-//     gulp.watch(imgSRC, imgmin);
-//     gulp.watch([PHPWatchFiles, jsdist + 'devwp.js', scss + 'style.min.css']).on('change', reload);
-// }
-
-// exports.css = css;
-// exports.concatCSS = concatCSS;
-// exports.javascript = javascript;
-// exports.watch = watch;
-// exports.imgmin = imgmin;
-
-// var build = gulp.parallel(watch);
-// gulp.task('default', build);
+gulp.task('default', ['serve']);
+//---------------------------------- Auto Watch Task Definition End----------------------------------//
