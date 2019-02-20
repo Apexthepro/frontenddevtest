@@ -7,7 +7,9 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     lineec = require('gulp-line-ending-corrector'),
     autoprefixer = require('gulp-autoprefixer'),
-    uglify = require('gulp-uglify');
+    uglify = require('gulp-uglify'),
+    changed = require('gulp-changed'),
+    imagemin = require('gulp-imagemin');
 
 //Environment Configurations Start//
 var projectName = 'frontenddevtest/',
@@ -16,7 +18,8 @@ var projectName = 'frontenddevtest/',
 //Watch Files Start//
 var html = dev + '**/*.html',
     scss = dev + '**/*.scss',
-    scripts = dev + '**/*.js';
+    scripts = dev + '**/*.js',
+    img = dev + 'Images/**/*';
 
 //---------------------------------- Variable Definition End----------------------------------//
 //---------------------------------- Task Definition Start----------------------------------//
@@ -44,20 +47,33 @@ gulp.task('scripts', function () {
         .pipe(gulp.dest(dist + '/scripts/'));
 });
 //Gulp scripts end//
-//Gulp copy html as it is//
+//Gulp copy html files start//
 gulp.task('copyHtml', function () {
     gulp.src(html)
         .pipe(gulp.dest(dist));
 });
-//Gulp copy html as it is//
+//Gulp copy html files end//
+//Gulp minify images start//
+gulp.task('imgmin', function () {
+    return gulp.src(img)
+        .pipe(changed(dist + '/images/'))
+        .pipe(imagemin([
+            imagemin.gifsicle({ interlaced: true }),
+            imagemin.jpegtran({ progressive: true }),
+            imagemin.optipng({ optimizationLevel: 2 })//Choose between 1 - 8
+        ]))
+        .pipe(gulp.dest(dist + '/images/'));
+});
+//Gulp minify images end//
 //---------------------------------- Task Definition End----------------------------------//
 //---------------------------------- Auto Watch Task Definition Start----------------------------------//
-gulp.task('run', ['css', 'scripts', 'copyHtml']);
+gulp.task('run', ['css', 'scripts', 'copyHtml', 'imgmin']);
 
 gulp.task('watch', function () {
     gulp.watch(scss, ['css']);
     gulp.watch(scripts, ['scripts']);
     gulp.watch(html, ['copyHtml']);
+    gulp.watch(img, ['imgmin']);
 });
 
 gulp.task('default', ['run', 'watch']);
