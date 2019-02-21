@@ -1,41 +1,107 @@
-h1{
-    color: yellow;
-}
-a{
-    color: grey;
-    border: 1px solid black;
-    margin-right: 10px;
-    padding: 5px;
+@import './sassfiles/normalize';
+
+.section-1 { grid-area: header; border: 1px solid black; margin-bottom: 10px;}
+.section-2 { grid-area: sidebyside1; border: 1px solid black; margin-bottom: 10px;}
+.section-3 { grid-area: sidebyside1img; border: 1px solid black; margin-bottom: 10px;}
+.section-4 { grid-area: title1;border: 1px solid black; margin-bottom: 10px; }
+.section-5 { grid-area: card-container; border: 1px solid black; margin-bottom: 10px;}
+.section-6 { grid-area: video; border: 1px solid black; margin-bottom: 10px; }
+.section-7 { grid-area: title2; border: 1px solid black; margin-bottom: 10px;}
+.section-8 { grid-area: sidebyside2; border: 1px solid black; margin-bottom: 10px;}
+.section-9 { grid-area: sidebyside2img;border: 1px solid black; margin-bottom: 10px; }
+.section-10 { grid-area: sidebyside3;border: 1px solid black; margin-bottom: 10px; }
+.section-11 { grid-area: sidebyside3img;border: 1px solid black; margin-bottom: 10px; }
+.section-12 { grid-area: sidebyside4; border: 1px solid black; margin-bottom: 10px;}
+.section-13 { grid-area: sidebyside4img;border: 1px solid black; margin-bottom: 10px; }
+.section-14 { grid-area: footer;border: 1px solid black; margin-bottom: 10px; }
+
+.section-1 { grid-area: header; }
+.section-2 { grid-area: sidebyside1;  }
+.section-3 { grid-area: sidebyside1img;  }
+.section-4 { grid-area: title1;  }
+.section-5 { grid-area: card-container;  }
+.section-6 { grid-area: video;   }
+.section-7 { grid-area: title2;  }
+.section-8 { grid-area: sidebyside2;  }
+.section-9 { grid-area: sidebyside2img;  }
+.section-10 { grid-area: sidebyside3;  }
+.section-11 { grid-area: sidebyside3img;  }
+.section-12 { grid-area: sidebyside4;  }
+.section-13 { grid-area: sidebyside4img;  }
+.section-14 { grid-area: footer;  }
+
+body{
+  padding: 0px;
+  margin: 0px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+  'header header'
+  'sidebyside1 sidebyside1img'
+  'title1 title1'
+  'card-container card-container'
+  'video video'
+  'title2 title2'
+  'sidebyside2 sidebyside2img'
+  'sidebyside3 sidebyside3img'
+  'sidebyside4 sidebyside4img'
+  'footer footer';
 }
 
-/* This CSS will print because %message-shared is extended. */
-%message-shared {
-    border: 1px solid #ccc;
-    padding: 10px;
-    color: #333;
+.section-1{
+
+  nav{
+    background-color: blue;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    padding-top: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
+    h3{      
+      background-color: red;
+      }
+    ul{
+      
+      li{
+        float: right; 
+        list-style-type: none;
+      }
+    }
   }
   
-  // This CSS won't print because %equal-heights is never extended.
-  %equal-heights {
-    display: flex;
-    flex-wrap: wrap;
+}
+.info-container{
+  padding: 70px;
+  text-align: center;
+  p{
+    margin: 0px auto;
+    width: 60%;
+  }
+  a{
+    div{
+
+    }
   }
   
-  .message {
-    @extend %message-shared;
+}
+.left{
+  text-align: left;
+  p{
+    width: 80%;
+    text-align: left;
+    margin: 0px;
   }
-  
-  .success {
-    @extend %message-shared;
-    border-color: green;
+}
+
+.section-3{
+  background-image: url('../images/temp.png');
+}
+.section-5{
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 20px;
+  .card{
+    border: 1px solid black;
   }
-  
-  .error {
-    @extend %message-shared;
-    border-color: red;
-  }
-  
-  .warning {
-    @extend %message-shared;
-    border-color: yellow;
-  }
+}
